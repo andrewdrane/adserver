@@ -10,11 +10,12 @@
 DROP TABLE IF EXISTS `ad_serve`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `ad_serve` (
+CREATE TABLE  `adserver`.`ad_serve` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `campaign_id` int(10) unsigned NOT NULL,
   `ad_id` int(10) unsigned NOT NULL COMMENT 'This is duplicated from the campaign_id for fast lookup',
-  `pending` int(10) unsigned NOT NULL,
+  `pending` int(11) NOT NULL COMMENT 'Leaving as a signed int, so if it somehow goes below 0, it will not become a giant number',
+  `html` text COLLATE utf8_unicode_ci NOT NULL COMMENT 'This is duplicated from the advertisement table for faster lookup',
   PRIMARY KEY (`id`),
   KEY `pending` (`pending`),
   KEY `campaign_id` (`campaign_id`)
