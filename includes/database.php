@@ -52,13 +52,18 @@ class DB {
      */
     function query( $sql ) { 
         
-        //make sure we are connected. Do error checks if no results are returned;
+        //make sure we are connected, or thow an exception
         if ( $this->mysqli->connect_error ) {
-            return false; 
+            throw new Exception( 'db connection error' );
         }
         
         $results = $this->mysqli->query( $sql );
         
-        return $results->fetch_assoc();
+        //results will be a boolean or an object
+        if( is_object( $results ) ) {
+            return $results->fetch_assoc();
+        } else {
+            return $results; 
+        }
     }
 }

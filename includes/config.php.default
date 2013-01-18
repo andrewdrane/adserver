@@ -1,0 +1,20 @@
+<?php
+/** AdServer 
+ * 2013 Andrew Drane
+ * 
+ * Configuration file, includes configurations for
+ *  Database
+ *  URL constant
+ */
+
+//Base application URL - where we expect the ads to be served from
+define('BASE_URL', 'adserver.local');
+
+//database config. Global variable
+global $database;
+$database = array();
+
+$database['location']   = 'localhost'; //default value
+$database['database']   = 'adserver'; //default value
+$database['user']       = '';
+$database['password']   = '';
