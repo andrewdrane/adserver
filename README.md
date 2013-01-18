@@ -7,13 +7,16 @@ Ensures even distribution across time.
 
 The program flows from two ends - the consumer end, which is the consumer viewing ads on a publisher's website (in this case, represented by nytimes.html) and the administrative end, accessed by cron job or manually, by loading update.php
 
-When pinged, the update.php file will iterate through all active ads, and will either add a record to the ad_serve table, or  update an existing one.
+When pinged, the update.php file will iterate through all active campaigns, and will either add a record to the ad_serve table, or  update an existing one.
+If a campaign has gone past it's desired time span, the ad_serve table and the campaigns table are set to inactive.
 
 The ad_serve table contains the allocated impressions count for each active ad. This allocation is increased over time. Each time update is pinged, it will increase the allocation to the appropriate amount relative to the lifespan of the campaign. 
 Update will calculate the total number of impressions that should have been served from the start of the campaign to the end, compare it to the number of impressions already allocated, and add the difference.
 This will prevent multiple or irregular hits to the update function from throwing off the campaign.
 
-If a campaign has exceded it's run (measured in days), then it is set to inactive.
+
+
+If a campaign has exceeded it's run (measured in days), then it is set to inactive.
 
 From the consumer end, a javascript snipit retrieves an ad in javascript form from the ad.php file. 
 This ad is determined by looking up the ad_serve record with the most pending ads.
@@ -22,6 +25,9 @@ The ad request should come with the URL of the page being viewed, using document
 Ad.php makes an asynchronous call via. exec() to the track_impression and decrement the ad_serve table. 
 This is done in a non-blocking fashion, so that the ad goes out quickly. 
 
+Clicking on an ad brings thbe user to click.php, which will retrieve the ad info from the database.
+If the info cannot be retrieved, the user is redirected back to referrer if possiboe, or an error is displayed.
+The click is tracked.
 
 
 ## Assumptions
@@ -49,4 +55,4 @@ This setup assumes a base URL of http://adserver.local. This exists in the datab
 
 ### To add in next version
 
-* Update.php: if a campaign is over, set it to inactive. Remove the ad_serve table.
+* Error and exception reporting. Create an exceptions log or table to track problems.
