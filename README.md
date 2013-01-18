@@ -47,11 +47,11 @@ This setup assumes a base URL of http://adserver.local. This exists in the datab
 ### Setup
 
 * Create a database called adserver. Load the db_setup.sql into that database.
-** The db_setup will create 2 advertisements, and 2 campaigns with 1MM impressions over 30 days
+ * The db_setup will create 2 advertisements, and 2 campaigns with 1MM impressions over 30 days
 * Setup a local server with the url adserver.local. Point it to the adserver directory.
 * Copy config.php.default to config.php. Fill in the required database connection info.
 * Either install the crontab function, or just ping adserver.local/update.php to get things started.
-** This will populate the ad_serve tables.
+ * This will populate the ad_serve tables.
 * Visit the url adserver.local/nytimes.html to see the adserver doing its thing.
 
 ### To add in next version
