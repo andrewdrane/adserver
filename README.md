@@ -32,6 +32,7 @@ The click is tracked.
 ## Assumptions
 
 * Responsiveness is critical. Any failures should result in a 'house ad'
+ * Code is very lightweight to minimize latency.
 * Tracking is essential, but should not slow down the ads being served
 
 ## Notes
