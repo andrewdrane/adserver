@@ -44,7 +44,7 @@ try {
 }
 
 //do an asynchronous tracking. Escape the command to be safe. ALWAYS do this, even if an exception was thrown. We want to know about this stuff.
-exec( escapeshellcmd( "php track_impression.php {$ad_serve_id} {$ad_id} {$source_url} {$ip_address}") . " > /dev/null 2>/dev/null &" );
+exec( escapeshellcmd( "php track_impression.php {$ad_serve_id} {$ad_id} '{$source_url}' '{$ip_address}'") . " > /dev/null 2>/dev/null &" );
 
 
 //send it back as javascript
