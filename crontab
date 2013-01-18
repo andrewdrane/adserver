@@ -1,0 +1,4 @@
+# add these to the server crontab file. 
+
+# Ping the server every 15 minutes to update the ad campaigns
+*/15 * * * * wget -q -O /dev/null -t 1 http://adserver.local/update.php

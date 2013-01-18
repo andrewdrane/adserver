@@ -5,6 +5,8 @@ Ensures distribution across time.
 
 == Notes
 
+This setup assumes a base URL of http://adserver.local. This exists in the database, cron file and PHP files, so do a complete lookup prior to db import if change is desired.
+
 = Database
 
 There are no indexes on the tracking tables. This is done intentionally to ensure the fastest possible writes.

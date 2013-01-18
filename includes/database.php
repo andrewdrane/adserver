@@ -57,13 +57,14 @@ class DB {
             throw new Exception( 'db connection error' );
         }
         
-        $results = $this->mysqli->query( $sql );
+        //return the mysql result set
+        return $this->mysqli->query( $sql );
         
         //results will be a boolean or an object
-        if( is_object( $results ) ) {
-            return $results->fetch_assoc();
-        } else {
-            return $results; 
-        }
+//        if( is_object( $results ) ) {
+//            return $results->fetch_array();
+//        } else {
+//            return $results; 
+//        }
     }
 }

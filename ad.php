@@ -12,22 +12,48 @@
 
 //$ad['html'];
 
-$ad_html = fallback_ad();
+require_once 'includes/database.php';
 
-$ad_id = '0'; //house ad
+$db = new DB();
+
+//House ad is the fallback. If anything goes wrong, this will be served.
+$ad_id = '0'; //house ad is default ad. Keep this
+$ad_serve_id = '0'; //by default set this to 0
+
+//put it in a try/catch. If anything goes wrong, just serve the house ad.
+try {
+    $ad_serve_result = $db->query("SELECT id, ad_id, html FROM ad_serve WHERE pending > 0 ORDER BY pending DESC LIMIT 0,1");
+    $ad_serve = $ad_serve_result->fetch_assoc();
+    
+    if ( !empty( $ad_serve['html'] ) ) {
+        $ad_serve_id = $ad_serve['id'];
+        $ad_id = $ad_serve['ad_id'];
+
+        //Now get the actual ad
+        $ad_html = "<a href=\"http://adserver.local/click.php?ad_id={$ad_serve['ad_id']}\">{$ad_serve['html']}</a>";
+    } else {
+        $ad_html = fallback_ad();
+    }
+} catch( Exception $e ) {
+    $ad_html = fallback_ad();
+}
+
 $source_url = isset( $_GET['source_url'] ) ? $_GET['source_url'] : '0';
 //just in case we don't have one
 $ip_address = isset( $_SERVER['REMOTE_ADDR'] ) ? $_SERVER['REMOTE_ADDR'] : '0';
 
 //do an asynchronous tracking. Escape the command to be safe
-exec( escapeshellcmd( "php track_impression.php {$ad_id} {$source_url} {$ip_address} ") . "> /dev/null 2>/dev/null &" );
+exec( escapeshellcmd( "php track_impression.php {$ad_serve_id} {$ad_id} {$source_url} {$ip_address}") . " > /dev/null 2>/dev/null &" );
 
+//send it back as javascript
 header("Content-type: text/javascript");
 
 echo 'document.write("' . addslashes( $ad_html ) . '");';
 
 
+
 //HELPER FUNCTIONS
+
 
 /** Return the HTML for the house ad. 
  * Hard coded to maximize chance ad will be served
